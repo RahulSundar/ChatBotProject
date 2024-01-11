@@ -94,12 +94,7 @@ def layout(*args):
     st.markdown(str(foot), unsafe_allow_html=True)
 
 
-# -------------------------------FUNCTIONS FOR RESPONSE GENERATION-------------#
-
-def generate_kARanswer(query, text_split):
-    ans, context, keys = chatbot_slim(query, text_split)
-    return ans, context, keys
-
+# -------------------------------FUNCTIONS FOR RESPONSE GENERATION-------------
 
 # -------------------------------------------------------------------------#
 # --------------------------GUI CONFIGS------------------------------------#
@@ -148,8 +143,8 @@ chat_engine = context_chatbot_engine(index)
 # -------------------------QUERY AND RESPONSE -------------#
 # ------------------------------------------------------------------------------#
 
-if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+if question := st.chat_input("Your question"): # Prompt for user input and save to chat history
+    st.session_state.messages.append({"role": "user", "content": question})
 
 for message in st.session_state.messages: # Display the prior chat messages
     with st.chat_message(message["role"]):
@@ -160,7 +155,7 @@ for message in st.session_state.messages: # Display the prior chat messages
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = chat_engine.chat(prompt)
+            response = chat_engine.chat(question)
             st.write(response.response)
             message = {"role": "assistant", "content": response.response}
             st.session_state.messages.append(message) # Add response to message history
